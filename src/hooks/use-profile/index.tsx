@@ -1,9 +1,15 @@
-import { useContext, createContext } from 'react'
+import { useContext, createContext, useState, useEffect } from 'react'
+import { getStorageItem } from 'utils/localStorage'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type ProfileContextData = {}
+const PROFILE_KEY = 'profile'
 
-export const ProfileContextDefaultValues = {}
+export type ProfileContextData = {
+  userName: string
+}
+
+export const ProfileContextDefaultValues = {
+  userName: '',
+}
 
 export const ProfileContext = createContext<ProfileContextData>(
   ProfileContextDefaultValues
@@ -14,8 +20,23 @@ export type ProfileProviderProps = {
 }
 
 const ProfileProvider = ({ children }: ProfileProviderProps) => {
+  const [userName, setUserName] = useState<string>('')
+
+  useEffect(() => {
+    const data = getStorageItem(PROFILE_KEY)
+    if (data) {
+      setUserName(data)
+    }
+  }, [])
+
   return (
-    <ProfileContext.Provider value={{}}>{children}</ProfileContext.Provider>
+    <ProfileContext.Provider
+      value={{
+        userName,
+      }}
+    >
+      {children}
+    </ProfileContext.Provider>
   )
 }
 
