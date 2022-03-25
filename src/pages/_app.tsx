@@ -11,7 +11,7 @@ function App({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <ProfileProvider>
         <Head>
-          <title>React Avançado - Boilerplate</title>
+          <title>Card Game - Miguel Machado</title>
           <link rel="shortcut icon" href="/img/icon-512.png" />
           <link rel="apple-touch-icon" href="/img/icon-512.png" />
           <link rel="manifest" href="/manifest.json" />
