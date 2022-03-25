@@ -1,14 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
 
 import { useProfile } from 'hooks/use-profile'
 
-import { initialCardsProps, drawInitialCards, shuffleDeck } from 'services/deck'
+import { Card, drawInitialCards, shuffleDeck, drawOneCard } from 'services/deck'
 import Loading from 'templates/Loading'
+import Button from 'components/Button'
 
 type PlayProps = {
-  initialCards: initialCardsProps
+  initialCards: Array<Card>
+  deckId: string
 }
 
 /**
@@ -18,9 +21,12 @@ type PlayProps = {
  * TODO: Create Play as Template
  */
 
-export default function Play({ initialCards }: PlayProps) {
+export default function Play({ initialCards, deckId }: PlayProps) {
   const router = useRouter()
   const { userName, hasUserName } = useProfile()
+  const [userCards, setUserCards] = useState<Array<Card>>(initialCards)
+
+  const CARD_VALIDATION = userCards.length === 8
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !userName) {
@@ -28,9 +34,20 @@ export default function Play({ initialCards }: PlayProps) {
     }
   }, [router, userName])
 
-  useEffect(() => {
-    console.log('initialCards: ', initialCards)
-  }, [initialCards])
+  const drawOneMoreCard = async () => {
+    if (CARD_VALIDATION) return
+
+    toast.info('Comprando mais uma carta...')
+
+    const { cards } = await drawOneCard(deckId)
+    setUserCards([...userCards, cards[0]])
+  }
+
+  const shuffleDrawedCards = (deck: Card[]) => {
+    const newDeck = [...deck]
+    const test = newDeck.sort(() => Math.random() - 0.5)
+    setUserCards(test)
+  }
 
   if (!hasUserName) {
     return <Loading />
@@ -42,15 +59,25 @@ export default function Play({ initialCards }: PlayProps) {
         Seu nome é: {userName}
       </p>
 
-      {initialCards.cards.map((card) => (
-        <Image
-          key={card.code}
-          src={card.image}
-          alt={card.value}
-          width={226}
-          height={314}
-        />
-      ))}
+      <Button onClick={drawOneMoreCard} disabled={CARD_VALIDATION}>
+        Comprar carta
+      </Button>
+
+      <Button onClick={() => shuffleDrawedCards(userCards)}>
+        Embaralhar cartas
+      </Button>
+
+      <section>
+        {userCards.map((card) => (
+          <Image
+            key={card.code}
+            src={card.image}
+            alt={card.value}
+            width={226}
+            height={314}
+          />
+        ))}
+      </section>
     </>
   )
 }
@@ -64,7 +91,8 @@ export async function getStaticProps() {
   // Pass data to the page via props
   return {
     props: {
-      initialCards,
+      initialCards: initialCards.cards,
+      deckId: deck.deck_id,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

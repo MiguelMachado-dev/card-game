@@ -1,6 +1,6 @@
 import { api } from '.'
 
-type Card = {
+export type Card = {
   image: string
   value: string
   suit: string
@@ -30,5 +30,12 @@ export const drawInitialCards = async (
   deckId: string
 ): Promise<initialCardsProps> => {
   const { data } = await api.get(`/${deckId}/draw/?count=5`)
+  return data
+}
+
+export const drawOneCard = async (
+  deckId: string
+): Promise<initialCardsProps> => {
+  const { data } = await api.get(`/${deckId}/draw/?count=1`)
   return data
 }
