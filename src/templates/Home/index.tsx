@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import Base from 'templates/Base'
+import Loading from 'templates/Loading'
 import TextField from 'components/TextField'
 import Button from 'components/Button'
 import { useProfile } from 'hooks/use-profile'
@@ -9,7 +10,7 @@ import { useProfile } from 'hooks/use-profile'
 import * as S from './styles'
 
 const Home = () => {
-  const { addProfile, userName } = useProfile()
+  const { addProfile, hasUserName } = useProfile()
   const router = useRouter()
 
   const [name, setName] = useState<string>('')
@@ -20,10 +21,14 @@ const Home = () => {
   }
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && userName) {
+    if (typeof window !== 'undefined' && hasUserName) {
       router.push('/play')
     }
-  }, [router, userName])
+  }, [router, hasUserName])
+
+  if (hasUserName) {
+    return <Loading />
+  }
 
   return (
     <Base>
