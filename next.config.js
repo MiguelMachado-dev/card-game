@@ -8,4 +8,7 @@ module.exports = withPWA({
     disable: !isProd,
   },
   webpack5: true,
+  images: {
+    domains: ['deckofcardsapi.com'],
+  },
 })
