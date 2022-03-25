@@ -30,10 +30,12 @@ const Home = () => {
     return <Loading />
   }
 
+  const formValidaton = name.length >= 2
+
   return (
     <Base>
       <S.Main>
-        <S.Title>Card game</S.Title>
+        <S.Title>Card Game</S.Title>
 
         <S.Form onSubmit={handleSubmit}>
           <S.Subtitle>Olá, me diga seu nome para jogarmos!</S.Subtitle>
@@ -47,7 +49,7 @@ const Home = () => {
               onChange={(event) => setName(event.currentTarget.value)}
             />
 
-            <Button type="submit" fullWidth minimal>
+            <Button type="submit" fullWidth minimal disabled={!formValidaton}>
               Jogar!
             </Button>
           </S.FormWrapper>
