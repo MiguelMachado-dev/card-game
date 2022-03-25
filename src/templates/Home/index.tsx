@@ -42,7 +42,7 @@ const Home = () => {
               onChange={(event) => setName(event.currentTarget.value)}
             />
 
-            <Button type="submit" fullWidth>
+            <Button type="submit" fullWidth minimal>
               Jogar!
             </Button>
           </S.FormWrapper>
