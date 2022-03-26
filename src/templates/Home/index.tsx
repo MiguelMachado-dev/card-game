@@ -50,7 +50,7 @@ const Home = () => {
             />
 
             <Button type="submit" fullWidth minimal disabled={!formValidaton}>
-              Jogar!
+              Ver cartas!
             </Button>
           </S.FormWrapper>
         </S.Form>

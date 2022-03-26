@@ -7,12 +7,14 @@ export type ProfileContextData = {
   userName: string
   hasUserName: boolean
   addProfile: (name: string) => void
+  removeProfile: () => void
 }
 
 export const ProfileContextDefaultValues = {
   userName: '',
   hasUserName: false,
   addProfile: () => null,
+  removeProfile: () => null,
 }
 
 export const ProfileContext = createContext<ProfileContextData>(
@@ -43,12 +45,19 @@ const ProfileProvider = ({ children }: ProfileProviderProps) => {
     setHasUserName(true)
   }
 
+  const removeProfile = () => {
+    setUserName('')
+    window.localStorage.removeItem(`MiguelMachado_${PROFILE_KEY}`)
+    setHasUserName(false)
+  }
+
   return (
     <ProfileContext.Provider
       value={{
         hasUserName,
         userName,
         addProfile,
+        removeProfile,
       }}
     >
       {children}
