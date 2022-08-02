@@ -35,7 +35,7 @@
     "styled-media-query": "^2.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.8",
+    "@babel/core": "^7.18.10",
     "@babel/preset-typescript": "^7.16.7",
     "@next/eslint-plugin-next": "^12.2.3",
     "@storybook/addon-essentials": "^6.5.9",
